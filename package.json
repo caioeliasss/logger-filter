@@ -1,6 +1,6 @@
 {
   "name": "logger-filter",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "Interactive log filter for any CLI process",
   "bin": { "filter": "./bin/nf.js" },
   "main": "lib/filter.js",
