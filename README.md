@@ -61,6 +61,8 @@ Type while the process is running and press Enter:
 
 ## Demo
 
+Start any process and filter its output without restarting:
+
 ```
 $ filter node server.js
 
@@ -70,7 +72,6 @@ GET /healthcheck 200 1ms
 GET /api/orders 200 34ms
 GET /healthcheck 200 1ms
 POST /api/users 201 88ms
-GET /healthcheck 200 1ms
 
 [filter] > -healthcheck
 [filter] hide: "healthcheck" (total: 1)
@@ -78,28 +79,27 @@ GET /healthcheck 200 1ms
 GET /api/products 200 22ms
 POST /api/orders 201 55ms
 GET /api/users 200 11ms
+```
 
-[filter] > !error --red
-[filter] highlight: "error" (red)
+Highlight errors in red with `!error --red`:
 
-[filter] > +error
-[filter] show only: "error" (total: 1)
+```diff
+  [filter] > !error --red
+  [filter] highlight: "error" (red)
 
-ERROR Failed to connect to database: timeout after 5000ms
-ERROR Retrying connection (1/3)...
-ERROR Retrying connection (2/3)...
+  GET /api/users 200 14ms
+- ERROR Failed to connect to database: timeout after 5000ms
+- ERROR Retrying connection (1/3)...
+  GET /api/products 200 22ms
+- ERROR Retrying connection (2/3)...
+  POST /api/orders 201 55ms
+```
 
-[filter] > /list
-[filter] show: healthcheck
-[filter] hide: error
-[filter] highlight: error(red)
+Remove a specific filter or reset everything:
 
-[filter] > /remove error
-[filter] removed filter: "error"
-
-GET /api/users 200 12ms
-GET /api/products 200 19ms
-ERROR Failed to connect to database: timeout after 5000ms
+```
+[filter] > /remove healthcheck
+[filter] removed filter: "healthcheck"
 
 [filter] > /reset
 [filter] all filters and highlights removed
