@@ -59,19 +59,50 @@ Type while the process is running and press Enter:
 
 **Highlight colors:** `yellow` (default), `red`, `green`, `blue`, `magenta`, `cyan`, `white`
 
-## Examples
+## Demo
 
 ```
-filter node server.js
-```
+$ filter node server.js
 
-```
-[filter] > -healthcheck        # hide health check noise
-[filter] > +error              # show only error lines
-[filter] > !timeout --red      # highlight "timeout" in red
-[filter] > /remove error       # remove the +error filter
-[filter] > /list               # see active filters
-[filter] > /reset              # clear everything
+Server listening on port 3000
+GET /api/users 200 12ms
+GET /healthcheck 200 1ms
+GET /api/orders 200 34ms
+GET /healthcheck 200 1ms
+POST /api/users 201 88ms
+GET /healthcheck 200 1ms
+
+[filter] > -healthcheck
+[filter] hide: "healthcheck" (total: 1)
+
+GET /api/products 200 22ms
+POST /api/orders 201 55ms
+GET /api/users 200 11ms
+
+[filter] > !error --red
+[filter] highlight: "error" (red)
+
+[filter] > +error
+[filter] show only: "error" (total: 1)
+
+ERROR Failed to connect to database: timeout after 5000ms
+ERROR Retrying connection (1/3)...
+ERROR Retrying connection (2/3)...
+
+[filter] > /list
+[filter] show: healthcheck
+[filter] hide: error
+[filter] highlight: error(red)
+
+[filter] > /remove error
+[filter] removed filter: "error"
+
+GET /api/users 200 12ms
+GET /api/products 200 19ms
+ERROR Failed to connect to database: timeout after 5000ms
+
+[filter] > /reset
+[filter] all filters and highlights removed
 ```
 
 ## License
