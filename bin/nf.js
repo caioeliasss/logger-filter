@@ -12,20 +12,25 @@ while (i < args.length) {
   if (args[i] === '--env' && args[i + 1]) { options.env = args[++i]; }
   else if (args[i] === '--cwd' && args[i + 1]) { options.cwd = args[++i]; }
   else if (args[i] === '--track') { options.track = true; }
+  else if (args[i] === '--no-track') { options.noTrack = true; }
   else { cmdArgs.push(args[i]); }
   i++;
 }
 
 if (!cmdArgs.length) {
-  console.error('Usage: filter [--env <val>] [--cwd <path>] [--track] <command...>');
+  console.error('Usage: filter [--env <val>] [--cwd <path>] [--track|--no-track] <command...>');
   console.error('');
   console.error('Examples:');
   console.error('  filter node server.js');
-  console.error('  filter --track node server.js');
   console.error('  filter npx nodemon server.js');
   console.error('  filter python main.py');
   console.error('  filter --env production npm start');
   process.exit(1);
+}
+
+const NODE_CMDS = new Set(['node', 'nodemon', 'npx', 'ts-node', 'tsx', 'bun']);
+if (!options.track && !options.noTrack && NODE_CMDS.has(cmdArgs[0])) {
+  options.track = true;
 }
 
 runFilter(cmdArgs, options);
