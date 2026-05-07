@@ -40,6 +40,7 @@ filter --cwd /path/to/project node app.js
 |------|-------------|
 | `--env <value>` | Set `NODE_ENV` (default: `development`) |
 | `--cwd <path>` | Working directory for the child process |
+| `--track` | Inject source filename into every log line (Node.js only) |
 
 ## Interactive Commands
 
@@ -54,6 +55,7 @@ Type while the process is running and press Enter:
 | `/reset` | Remove all filters and highlights |
 | `/clear` | Clear screen and reprint history |
 | `/list` | List all active filters |
+| `/track` | Toggle source filename display |
 | `/help` | Show command reference |
 | `Ctrl+C` | Kill process and exit |
 
@@ -103,6 +105,35 @@ Remove a specific filter or reset everything:
 
 [filter] > /reset
 [filter] all filters and highlights removed
+```
+
+## Track Mode
+
+Start with `--track` to inject source filenames into every log line. Works with any Node.js process.
+
+```bash
+filter --track node app.js
+```
+
+Each `console.log` call is prefixed with the file it came from, rendered in italic:
+
+```
+main.js - Server listening on port 3000
+routes/users.js - GET /api/users 200 12ms
+middleware/auth.js - Token verified for user 42
+routes/users.js - GET /api/users 200 11ms
+```
+
+Toggle the filename display at runtime with `/track` — history reprints with or without filenames.
+
+Since filenames appear in the output, you can filter by source file:
+
+```
+[filter] > -middleware/auth.js
+[filter] hide: "middleware/auth.js" (total: 1)
+
+main.js - Server listening on port 3000
+routes/users.js - GET /api/users 200 12ms
 ```
 
 ## License
