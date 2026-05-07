@@ -13,7 +13,7 @@ npm install -g logger-filter
 Or clone and link locally:
 
 ```bash
-git clone https://github.com/your-username/logger-filter.git
+git clone https://github.com/caioeliasss/logger-filter.git
 cd logger-filter
 npm link
 ```
@@ -41,6 +41,26 @@ filter --cwd /path/to/project node app.js
 | `--env <value>` | Set `NODE_ENV` (default: `development`) |
 | `--cwd <path>` | Working directory for the child process |
 | `--track` | Inject source filename into every log line (Node.js only) |
+| `--no-track` | Disable auto-track even for Node.js commands |
+
+**Auto-track:** `--track` is enabled automatically when the command is `node`, `nodemon`, `npx`, `ts-node`, `tsx`, or `bun`. Use `--no-track` to opt out.
+
+## Project Config
+
+Run `filter init` in your project directory to create a `.filter.json` config:
+
+```bash
+filter init
+```
+
+This creates `.filter.json` with your runner and environment. After that, running `filter` with no arguments uses the config:
+
+```json
+{
+  "run": "npx nodemon server.js",
+  "env": "development"
+}
+```
 
 ## Interactive Commands
 
@@ -109,7 +129,7 @@ Remove a specific filter or reset everything:
 
 ## Track Mode
 
-Start with `--track` to inject source filenames into every log line. Works with any Node.js process.
+Start with `--track` to inject source filenames into every log line. Works with any Node.js process. Enabled automatically for `node`, `nodemon`, `npx`, `ts-node`, `tsx`, and `bun`.
 
 ```bash
 filter --track node app.js
